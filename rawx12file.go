@@ -24,6 +24,7 @@ type RawSegment struct {
 	LineCount int
 }
 
+// NewRawX12FileReader creates a RawX12FileReader from a io.Reader.
 func NewRawX12FileReader(inFile io.Reader) (*rawX12FileReader, error) {
 	const isaLength = 106
 	r := new(rawX12FileReader)
@@ -42,6 +43,11 @@ func NewRawX12FileReader(inFile io.Reader) (*rawX12FileReader, error) {
 	r.repetitionTerm = repTerm
 	r.icvn = icvn
 	return r, nil
+}
+
+func NewRawX12FileReaderFromString(s string) (*rawX12FileReader, error) {
+	reader := strings.NewReader(s)
+	return NewRawX12FileReader(reader)
 }
 
 func (r *rawX12FileReader) GetSegments() <-chan RawSegment {
